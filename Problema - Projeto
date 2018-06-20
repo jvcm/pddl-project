@@ -1,0 +1,41 @@
+(define (problem IAI)
+    (:domain logistics-typed)
+    (:objects
+        caixa - CAIXA
+        macaco1 - MACACO
+        macaco2 - MACACO
+		A - LUGAR
+		B - LUGAR
+		D1 - LUGAR
+		D2 - LUGAR
+		D3 - LUGAR
+		D4 - LUGAR
+		banana1 - BANANA
+		banana2 - BANANA
+		banana3 - BANANA
+		banana4 - BANANA
+    )
+    (:init
+	    (low macaco1)
+	    (low macaco2)
+	    (high banana1)
+	    (high banana2)
+        (low banana3)
+	    (low banana4)
+        (at macaco1 A)
+        (at macaco2 B)
+		(at caixa B)
+		(at banana1 D1)
+		(at banana2 D2)
+		(at banana3 D3)
+		(at banana4 D4)
+		(vazio macaco1)
+		(vazio macaco2)
+    )
+    (:goal (and
+	(at banana1 A)
+	(at banana2 A)
+	(at banana3 A)
+	(at banana4 A)
+	))
+)

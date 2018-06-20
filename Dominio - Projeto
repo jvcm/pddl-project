@@ -1,0 +1,142 @@
+;; UFPE - Introdução Agentes Inteligente
+;; João Moraes, Victor Cardoso
+
+(define (domain logistics-typed)
+  (:requirements :strips :typing) 
+  (:types MACACO CAIXA BANANA LUGAR)
+  (:predicates 	
+		(at ?mac ?lug)
+		(vazio ?mac)
+		(carregado ?mac ?ban)
+		(low ?mac) (high ?mac))
+  (:action IR_CAIXA
+	:parameters
+		 (?mac - MACACO
+		  ?lug1 - LUGAR
+		  ?cax - CAIXA
+		  ?lug2 - LUGAR
+		  ?ban - BANANA)
+	:precondition
+		(and 	(at ?mac ?lug1) 
+			(at ?cax ?lug2)
+			(low ?mac)
+			(vazio ?mac)
+			(high ?ban))
+	:effect
+		(and 	(at ?mac ?lug2)
+			(not (at ?mac ?lug1))))
+
+  (:action IR_BANANA
+	:parameters
+		 (?mac - MACACO
+		  ?lug1 - LUGAR
+		  ?lug2 - LUGAR
+		  ?ban - BANANA)
+	:precondition
+		(and 	(at ?mac ?lug1) 
+			(at ?ban ?lug2)
+			(low ?mac)
+			(vazio ?mac)
+			(low ?ban))
+	:effect
+		(and 	(at ?mac ?lug2)
+			(not (at ?mac ?lug1))))
+  (:action ARRASTAR
+	:parameters
+		 (?mac - MACACO
+		  ?lug1 - LUGAR
+		  ?cax - CAIXA
+		  ?lug2 - LUGAR
+		  ?ban - BANANA)
+	:precondition
+		(and 	(at ?mac ?lug1) 
+			(at ?cax ?lug1)
+			(low ?mac)
+			(at ?ban ?lug2)
+			(high ?ban))
+	:effect
+		(and 	(at ?mac ?lug2)
+			(at ?cax ?lug2)
+			(not (at ?mac ?lug1))
+			(not (at ?cax ?lug1))))
+  (:action SUBIR
+	:parameters
+		 (?mac - MACACO
+		  ?lug1 - LUGAR
+		  ?cax - CAIXA
+		  ?ban - BANANA)
+	:precondition
+		(and 	(at ?mac ?lug1) 
+			(at ?cax ?lug1)
+			(low ?mac)
+			(at ?ban ?lug1)
+			(high ?ban)
+			(vazio ?mac))
+	:effect
+		(and 	(high ?mac)
+			(not (low ?mac))))
+  (:action PEGAR
+	:parameters
+		 (?mac - MACACO
+		  ?lug1 - LUGAR
+		  ?ban - BANANA)
+	:precondition
+		(and 	(at ?mac ?lug1) 
+			(at ?ban ?lug1)
+			(vazio ?mac)
+		(or     (and (low ?mac) (low ?ban))
+			(and (high ?mac) (high ?ban))))
+	:effect
+		(and 	(carregado ?mac ?ban)
+			(not (vazio ?mac))))
+  
+(:action DESCER_CARREGADO
+	:parameters
+		 (?mac - MACACO
+		  ?ban - BANANA)
+	:precondition
+		(and 	(high ?mac)
+			(carregado ?mac ?ban))
+	:effect
+		(and 	(low ?mac)
+			(low ?ban)
+			(not (high ?mac))
+			(not (low ?ban))))
+
+  (:action DESCER
+	:parameters
+		 (?mac - MACACO)
+	:precondition
+		(and 	(high ?mac)
+			(vazio ?mac))
+	:effect
+		(and 	(low ?mac)
+			(not (high ?mac))))
+  (:action IR_CARREGADO
+	:parameters
+		 (?mac - MACACO
+		  ?ban - BANANA
+		  ?lug1 - LUGAR
+		  ?lug2 - LUGAR)
+	:precondition
+		(and 	(carregado ?mac ?ban)
+		        (low ?mac)
+		        (at ?mac ?lug1))
+	:effect
+		(and 	(at ?mac ?lug2)
+		        (at ?ban ?lug2)
+			(not (at ?mac ?lug1))
+			(not (at ?ban ?lug1))))
+  (:action SOLTAR
+	:parameters
+		 (?mac - MACACO
+		  ?ban - BANANA)
+    :precondition
+		(and 	(carregado ?mac ?ban)
+		        )
+	:effect
+		(and 	(vazio ?mac)
+			(not (carregado ?mac ?ban))))
+	
+)
+
