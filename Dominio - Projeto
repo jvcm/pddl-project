@@ -137,6 +137,7 @@
 	:effect
 		(and 	(vazio ?mac)
 			(not (carregado ?mac ?ban))))
+
 	
 )
 
