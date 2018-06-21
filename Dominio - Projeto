@@ -8,9 +8,11 @@
 		(at ?mac ?lug)
 		(vazio ?mac)
 		(carregado ?mac ?ban)
-		(low ?mac) (high ?mac)
+		(baixo ?mac) (alto ?mac)
 		(livre ?cax) (ocupada ?cax))
-  (:action IR_CAIXA
+ 
+ ;; Ação IR_CAIXA >> Aplicada quando o macaco precisa ir até a caixa para pegar uma banana que está na posição "alta" 
+  (:action IR_CAIXA 
 	:parameters
 		 (?mac - MACACO
 		  ?lug1 - LUGAR
@@ -20,13 +22,14 @@
 	:precondition
 		(and 	(at ?mac ?lug1) 
 			(at ?cax ?lug2)
-			(low ?mac)
+			(baixo ?mac)
 			(vazio ?mac)
-			(high ?ban))
+			(alto ?ban))
 	:effect
 		(and 	(at ?mac ?lug2)
 			(not (at ?mac ?lug1))))
 
+;; Ação IR_BANANA >> Aplicada quando o macaco vai até uma banana que está na posição "baixa"
   (:action IR_BANANA
 	:parameters
 		 (?mac - MACACO
@@ -36,12 +39,14 @@
 	:precondition
 		(and 	(at ?mac ?lug1) 
 			(at ?ban ?lug2)
-			(low ?mac)
+			(baixo ?mac)
 			(vazio ?mac)
-			(low ?ban))
+			(baixo ?ban))
 	:effect
 		(and 	(at ?mac ?lug2)
 			(not (at ?mac ?lug1))))
+
+;; Ação ARRASTAR >> Aplicada quando o macaco precisa arrastar uma caixa livre para o local onde há uma banana na posição "alta"  
   (:action ARRASTAR
 	:parameters
 		 (?mac - MACACO
@@ -52,16 +57,18 @@
 	:precondition
 		(and 	(at ?mac ?lug1) 
 			(at ?cax ?lug1)
-			(low ?mac)
+			(baixo ?mac)
 			(at ?ban ?lug2)
-			(high ?ban)
+			(alto ?ban)
 			(livre ?cax))
 	:effect
 		(and 	(at ?mac ?lug2)
 			(at ?cax ?lug2)
 			(not (at ?mac ?lug1))
 			(not (at ?cax ?lug1))))
-  (:action SUBIR
+			
+;; Ação SUBIR >> Aplicada quando o macaco precisa subir numa caixa para pegar a banana
+	(:action SUBIR
 	:parameters
 		 (?mac - MACACO
 		  ?lug1 - LUGAR
@@ -70,16 +77,18 @@
 	:precondition
 		(and 	(at ?mac ?lug1) 
 			(at ?cax ?lug1)
-			(low ?mac)
+			(baixo ?mac)
 			(at ?ban ?lug1)
-			(high ?ban)
+			(alto ?ban)
 			(vazio ?mac)
 			(livre ?cax))
 	:effect
-		(and 	(high ?mac)
+		(and 	(alto ?mac)
 			(ocupada ?cax)
-			(not (low ?mac))
+			(not (baixo ?mac))
 			(not (livre ?cax))))
+			
+;; Ação PEGAR >> Aplicada quando o macaco está no mesmo local e altura da banana e deseja carregá-la consigo
   (:action PEGAR
 	:parameters
 		 (?mac - MACACO
@@ -89,42 +98,46 @@
 		(and 	(at ?mac ?lug1) 
 			(at ?ban ?lug1)
 			(vazio ?mac)
-		(or     (and (low ?mac) (low ?ban))
-			(and (high ?mac) (high ?ban))))
+		(or     (and (baixo ?mac) (baixo ?ban))
+			(and (alto ?mac) (alto ?ban))))
 	:effect
 		(and 	(carregado ?mac ?ban)
 			(not (vazio ?mac))))
-  
+ 
+;; Ação DESCER_CARREGADO >> Aplicada quando o macaco possui uma banana e precisa descer da caixa para mover-se à posição desejada 
 (:action DESCER_CARREGADO
 	:parameters
 		 (?mac - MACACO
 		  ?ban - BANANA
 		  ?cax - CAIXA)
 	:precondition
-		(and 	(high ?mac)
+		(and 	(alto ?mac)
 			(carregado ?mac ?ban)
 			(ocupada ?cax))
 	:effect
-		(and 	(low ?mac)
-			(low ?ban)
+		(and 	(baixo ?mac)
+			(baixo ?ban)
 			(livre ?cax)
-			(not (high ?mac))
-			(not (low ?ban))
+			(not (alto ?mac))
+			(not (baixo ?ban))
 			(not (ocupada ?cax))))
 
+;; Ação DESCER >> Aplicada em 2 situações: quando o macaco precisa permitir que a caixa seja arrastada OU quando ele precisa mover-se, sem a banana, para outra posição
   (:action DESCER
 	:parameters
 		 (?mac - MACACO
 		  ?cax - CAIXA)
 	:precondition
-		(and 	(high ?mac)
+		(and 	(alto ?mac)
 			(vazio ?mac)
 			(ocupada ?cax))
 	:effect
-		(and 	(low ?mac)
+		(and 	(baixo ?mac)
 			(livre ?cax)
-			(not (high ?mac))
+			(not (alto ?mac))
 			(not (ocupada ?cax))))
+			
+;; Ação IR_CARREGADO >> Aplicada quando o macaco vai até uma posição desejada carregando a banana			
   (:action IR_CARREGADO
 	:parameters
 		 (?mac - MACACO
@@ -133,13 +146,15 @@
 		  ?lug2 - LUGAR)
 	:precondition
 		(and 	(carregado ?mac ?ban)
-		        (low ?mac)
+		        (baixo ?mac)
 		        (at ?mac ?lug1))
 	:effect
 		(and 	(at ?mac ?lug2)
 		        (at ?ban ?lug2)
 			(not (at ?mac ?lug1))
 			(not (at ?ban ?lug1))))
+			
+;; Ação SOLTAR >> Aplicada quando o macaco solta a banana em uma posição desejada			
   (:action SOLTAR
 	:parameters
 		 (?mac - MACACO
@@ -153,4 +168,3 @@
 
 	
 )
-
