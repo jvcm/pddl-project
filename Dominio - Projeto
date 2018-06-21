@@ -8,7 +8,8 @@
 		(at ?mac ?lug)
 		(vazio ?mac)
 		(carregado ?mac ?ban)
-		(low ?mac) (high ?mac))
+		(low ?mac) (high ?mac)
+		(livre ?cax) (ocupada ?cax))
   (:action IR_CAIXA
 	:parameters
 		 (?mac - MACACO
@@ -53,7 +54,8 @@
 			(at ?cax ?lug1)
 			(low ?mac)
 			(at ?ban ?lug2)
-			(high ?ban))
+			(high ?ban)
+			(livre ?cax))
 	:effect
 		(and 	(at ?mac ?lug2)
 			(at ?cax ?lug2)
@@ -71,10 +73,13 @@
 			(low ?mac)
 			(at ?ban ?lug1)
 			(high ?ban)
-			(vazio ?mac))
+			(vazio ?mac)
+			(livre ?cax))
 	:effect
 		(and 	(high ?mac)
-			(not (low ?mac))))
+			(ocupada ?cax)
+			(not (low ?mac))
+			(not (livre ?cax))))
   (:action PEGAR
 	:parameters
 		 (?mac - MACACO
@@ -93,25 +98,33 @@
 (:action DESCER_CARREGADO
 	:parameters
 		 (?mac - MACACO
-		  ?ban - BANANA)
+		  ?ban - BANANA
+		  ?cax - CAIXA)
 	:precondition
 		(and 	(high ?mac)
-			(carregado ?mac ?ban))
+			(carregado ?mac ?ban)
+			(ocupada ?cax))
 	:effect
 		(and 	(low ?mac)
 			(low ?ban)
+			(livre ?cax)
 			(not (high ?mac))
-			(not (low ?ban))))
+			(not (low ?ban))
+			(not (ocupada ?cax))))
 
   (:action DESCER
 	:parameters
-		 (?mac - MACACO)
+		 (?mac - MACACO
+		  ?cax - CAIXA)
 	:precondition
 		(and 	(high ?mac)
-			(vazio ?mac))
+			(vazio ?mac)
+			(ocupada ?cax))
 	:effect
 		(and 	(low ?mac)
-			(not (high ?mac))))
+			(livre ?cax)
+			(not (high ?mac))
+			(not (ocupada ?cax))))
   (:action IR_CARREGADO
 	:parameters
 		 (?mac - MACACO

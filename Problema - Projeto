@@ -16,13 +16,14 @@
 		banana4 - BANANA
     )
     (:init
+        (ocupada caixa)
 	    (low macaco1)
-	    (low macaco2)
+	    (high macaco2)
 	    (high banana1)
 	    (high banana2)
         (low banana3)
 	    (low banana4)
-        (at macaco1 A)
+        (at macaco1 B)
         (at macaco2 B)
 		(at caixa B)
 		(at banana1 D1)
@@ -34,9 +35,6 @@
     )
     (:goal (and
 	(at banana1 A)
-	(at banana2 A)
-	(at banana3 A)
-	(at banana4 A)
 	))
-
 )
+
