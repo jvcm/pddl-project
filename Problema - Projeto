@@ -6,37 +6,42 @@
         macaco2 - MACACO
 		A - LUGAR
 		B - LUGAR
-		D1 - LUGAR
-		D2 - LUGAR
-		D3 - LUGAR
-		D4 - LUGAR
+		C - LUGAR
+		D - LUGAR
+		E - LUGAR
+		F - LUGAR
 		banana1 - BANANA
 		banana2 - BANANA
 		banana3 - BANANA
 		banana4 - BANANA
     )
     (:init
+        ; Predicados da(s) caixa(s):
+        (at caixa B)
         (ocupada caixa)
-	    (baixo macaco1)
-	    (alto macaco2)
+        ; Predicados da(s) banana(s):
+	    (at banana1 B)
+		(at banana2 C)
+		(at banana3 D)
+		(at banana4 E)
 	    (alto banana1)
 	    (alto banana2)
         (baixo banana3)
 	    (baixo banana4)
+	    (carregado macaco2 banana1)
+	    (no_ambiente banana2)
+	    (no_ambiente banana3)
+	    (no_ambiente banana4)
+	    ; Predicados do(s) macacos(s):
         (at macaco1 A)
         (at macaco2 B)
-		(at caixa B)
-		(at banana1 B)
-		(at banana2 D2)
-		(at banana3 D3)
-		(at banana4 D4)
+        (baixo macaco1)
+	    (alto macaco2)
 		(vazio macaco1)
-		(carregado macaco2 banana1)
+		
     )
     (:goal (and
 	(carregado macaco1  banana1)
-	(carregado macaco2  banana1)
 	(at macaco1 A)
 	))
 )
-
