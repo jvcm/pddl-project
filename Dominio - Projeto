@@ -1,13 +1,26 @@
-;; UFPE - Introdução Agentes Inteligente
-;; João Moraes, Victor Cardoso
+;; Universidade Federal de Pernambuco
+;; Disciplina: Introdução aos Agentes Inteligente
+;; Alunos:  João Victor Campos Moraes
+;;          Victor Gomes Cardoso
+;; Professores: Ricardo Prudêncio e Flávia Barros
 
 (define (domain logistics-typed)
   (:requirements :strips :typing) 
   (:types MACACO CAIXA BANANA LUGAR)
   (:predicates 	
+		;DESCRIÇÃO DOS PREDICADOS
+		; at - Apresenta a posição sujeitos/objetos (macacos, bananas e caixas) no espaço  
+		; vazio - Indica que o macaco não porta nenhuma banana
+		; carregado - Indica que o macaco indicado porta a banana indicada
+		; no_ambiente - Significa que a banana indicada está solta no ambiente
+		; baixo - O sujeito/objeto está embaixo
+		; alto - O sujeito/objeto está em cima
+		; livre - Não há macaco sobre a caixa em questão
+		; ocupada - Há um macaco em cima da caixa
 		(at ?mac ?lug)
-		(vazio ?mac)
-		(carregado ?mac ?ban)
+		(vazio ?mac) 
+		(carregado ?mac ?ban) 
+		(no_ambiente ?ban)
 		(baixo ?mac) (alto ?mac)
 		(livre ?cax) (ocupada ?cax))
  
@@ -98,11 +111,13 @@
 		(and 	(at ?mac ?lug1) 
 			(at ?ban ?lug1)
 			(vazio ?mac)
+			(no_ambiente ?ban)
 		(or     (and (baixo ?mac) (baixo ?ban))
 			(and (alto ?mac) (alto ?ban))))
 	:effect
 		(and 	(carregado ?mac ?ban)
-			(not (vazio ?mac))))
+			(not (vazio ?mac))
+			(not (no_ambiente ?ban))))
  
 ;; Ação DESCER_CARREGADO >> Aplicada quando o macaco possui uma banana e precisa descer da caixa para mover-se à posição desejada 
 (:action DESCER_CARREGADO
@@ -164,6 +179,7 @@
 		        )
 	:effect
 		(and 	(vazio ?mac)
+		        (no_ambiente ?ban)
 			(not (carregado ?mac ?ban))))
 
 	
